@@ -55,7 +55,17 @@
 
         document.getElementById("sendButton").style.display = "block";
 
+        let selfUrl = new URL(window.location.href);
+        let params = selfUrl.searchParams;
+        if (params.has('f_name'))
+        {
+            let fName = params.get('f_name');
+            var f_name = document.getElementById('f_name');
+            f_name.value = fName;
+        }
+
         toSaveData();
+
       })
     .catch(err => console.error('無法獲取 FCM token:', err));
 
@@ -64,14 +74,7 @@
   
   <script>
 
-    let selfUrl = new URL(window.location.href);
-    let params = selfUrl.searchParams;
-    if (params.has('f_name'))
-    {
-        let fName = params.get('f_name');
-        var f_name = document.getElementById('f_name');
-        f_name.value = fName;
-    }
+    
 
     function toSaveData()
     {
@@ -101,7 +104,6 @@
     const publicKey = 'BLgcUwbX7qtqr_hLOIpE2Xd3yxVWc7ybWNK_UB5LR2Forp7kJA-Yx8tkGvqJueWrd3dldKUDYael33Bhmyjuqog';
 
   
-
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('firebase-messaging-sw.js')
           .then(registration => {
