@@ -12,6 +12,7 @@
   <button id="notificationButton">請求通知權限</button>
   <button id="showNotificationButton">發送通知</button>
 
+  <H1><div id="result"></div></H1>   
   
   <script type="module">
     // Import the functions you need from the SDKs you need
@@ -42,6 +43,8 @@
         console.log('FCM Token:', token);
         // 將 token 發送到後端伺服器
         //sendTokenToServer(token);
+        var result = document.getElementById('result');
+        result.innerHTML = token;
       })
     .catch(err => console.error('無法獲取 FCM token:', err));
 
