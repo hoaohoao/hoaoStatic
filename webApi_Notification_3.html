@@ -50,8 +50,20 @@
         console.log('FCM Token:', token);
         // 將 token 發送到後端伺服器
         //sendTokenToServer(token);
-        var result = document.getElementById('result');
-        result.innerHTML = token;
+        afterGetToken(token);
+
+      })
+    .catch(err => console.error('無法獲取 FCM token:', err));
+
+  </script>
+  
+  
+  <script>
+
+    function afterGetToken(tokenString)
+    {
+      var result = document.getElementById('result');
+        result.innerHTML = tokenString;
 
         document.getElementById("sendButton").style.display = "block";
 
@@ -65,16 +77,7 @@
         }
 
         toSaveData();
-
-      })
-    .catch(err => console.error('無法獲取 FCM token:', err));
-
-  </script>
-  
-  
-  <script>
-
-    
+    }
 
     function toSaveData()
     {
