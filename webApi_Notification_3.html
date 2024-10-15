@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用 Web Notifications API 幫網站加入通知功能</title>
+</head>
+
+<body>
+  <button id="notificationButton">請求通知權限</button>
+  <button id="showNotificationButton">發送通知</button>
+
+  
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    
+    import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-messaging.js';
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDceaYTJF3VS20PPZDJXwnTWCGdST2yM6M",
+      authDomain: "learn-for-web-push-a43f1.firebaseapp.com",
+      projectId: "learn-for-web-push-a43f1",
+      storageBucket: "learn-for-web-push-a43f1.appspot.com",
+      messagingSenderId: "643261322701",
+      appId: "1:643261322701:web:e7b4a1f0b447febb92a084"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const messaging = getMessaging(app);
+
+    getToken(messaging, { vapidKey: 'BLgcUwbX7qtqr_hLOIpE2Xd3yxVWc7ybWNK_UB5LR2Forp7kJA-Yx8tkGvqJueWrd3dldKUDYael33Bhmyjuqog' })
+      .then(token => {
+        console.log('FCM Token:', token);
+        // 將 token 發送到後端伺服器
+        //sendTokenToServer(token);
+      })
+    .catch(err => console.error('無法獲取 FCM token:', err));
+
+  </script>
+  
+  
+  <script>
+
+    // 在 Push Companion 網站產生的 publickey
+    const publicKey = 'BLgcUwbX7qtqr_hLOIpE2Xd3yxVWc7ybWNK_UB5LR2Forp7kJA-Yx8tkGvqJueWrd3dldKUDYael33Bhmyjuqog';
+
+  
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
+          .then(registration => {
+            console.log('Service Worker 註冊成功:', registration);
+          })
+          .catch(error => {
+            console.error('Service Worker 註冊失敗:', error);
+          });
+
+        // 新增 ready()
+        navigator.serviceWorker.ready.then(registration => {
+          return registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            // 新增 urlBase64ToUint8Array() 解析publickey
+            applicationServerKey: urlBase64ToUint8Array(publicKey)
+          });
+        }).then(subscription => {
+          console.log('推送訂閱資訊:', JSON.stringify(subscription));
+        }).catch(error => {
+          console.error('推送訂閱失敗:', error);
+        });
+        
+
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+    
+
+
+    // browser 通知權限要開  ，  os 通知權也要開
+
+    document.getElementById('notificationButton').addEventListener('click', function () {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          console.log("通知權限已獲得");
+          // 可以在這裡添加一個新的通知來測試
+          new Notification("測試通知", { body: "這是一個測試通知" });
+        } else {
+          console.log("通知權限被拒絕");
+        }
+      });
+    });
+
+    document.getElementById('showNotificationButton').addEventListener('click', function () {
+      if (Notification.permission === "granted") {
+        const notification = new Notification("新文章", {
+          body: "MUKI 發佈了一篇新文章，點我閱讀。"
+        });
+
+        notification.onclick = function () {
+          window.open("https://muki.tw/ngrok-err-ngrok-6024/", "_blank");
+          notification.close()
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
