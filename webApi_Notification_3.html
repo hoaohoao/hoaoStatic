@@ -56,7 +56,7 @@
   
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('firebase-messaging-sw.js')
+        navigator.serviceWorker.register('/hoaoStatic/firebase-messaging-sw.js')
           .then(registration => {
             console.log('Service Worker 註冊成功:', registration);
           })
