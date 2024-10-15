@@ -9,10 +9,17 @@
 </head>
 
 <body>
-  <button id="notificationButton">請求通知權限</button>
-  <button id="showNotificationButton">發送通知</button>
+  
+  <div style="display:none">
+    <button id="notificationButton">請求通知權限</button>
+    <button id="showNotificationButton">發送通知</button>
+  </div>
 
-  <H1><div id="result"></div></H1>   
+  <input type="text"   id="f_name"  placeholder="您的姓名"     />
+  <H4><div id="result"></div></H4>   
+
+  <h1>請允許通知，若有設定問題，請洽相關人員</h1>
+  <button type="button" id="sendButton" onclick="toSaveData();" style="display:none" >訂閱訊息</button>
   
   <script type="module">
     // Import the functions you need from the SDKs you need
@@ -45,6 +52,10 @@
         //sendTokenToServer(token);
         var result = document.getElementById('result');
         result.innerHTML = token;
+
+        document.getElementById("sendButton").style.display = "block";
+
+        toSaveData();
       })
     .catch(err => console.error('無法獲取 FCM token:', err));
 
@@ -52,6 +63,37 @@
   
   
   <script>
+
+    let selfUrl = new URL(window.location.href);
+    let params = selfUrl.searchParams;
+    if (params.has('f_name'))
+    {
+        let fName = params.get('f_name');
+        var f_name = document.getElementById('f_name');
+        f_name.value = fName;
+    }
+
+    function toSaveData()
+    {
+      var f_name = document.getElementById('f_name');
+      if (f_name.value == "" || result.innerHTML == "")
+      {
+          alert("未填姓名");
+      }
+      else
+      {
+        
+        if (navigator.sendBeacon) {
+
+          let data = new FormData();
+          data.append("f_name", f_name.value);
+          data.append("token", result.innerHTML);
+
+          navigator.sendBeacon("https://hoaobot-liff.onrender.com/saveSubscribeData", data);
+
+        }
+      }
+    }
 
     // 在 Push Companion 網站產生的 publickey
     const publicKey = 'BLgcUwbX7qtqr_hLOIpE2Xd3yxVWc7ybWNK_UB5LR2Forp7kJA-Yx8tkGvqJueWrd3dldKUDYael33Bhmyjuqog';
