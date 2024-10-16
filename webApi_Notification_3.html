@@ -79,6 +79,19 @@
         toSaveData();
     }
 
+    function getMachineId() 
+    {
+    
+      let machineId = localStorage.getItem('MachineId');
+      
+      if (!machineId) {
+          machineId = crypto.randomUUID();
+          localStorage.setItem('MachineId', machineId);
+      }
+  
+      return machineId;
+    }
+
     function toSaveData()
     {
       var f_name = document.getElementById('f_name');
@@ -98,6 +111,10 @@
           navigator.sendBeacon("https://hoaobot-liff.onrender.com/saveSubscribeData", data);
 
           alert("已訂閱...");
+
+          let urlBackToLine = "https://line.me/R/nv/chat";
+          
+          window.location.replace(urlBackToLine);
 
         }
       }
