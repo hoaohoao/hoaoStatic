@@ -1,0 +1,6 @@
+{
+    "name": "Get MG Message",
+    "short_name": "MG_Notification",
+    "start_url": ".",
+    "display": "standalone"
+  }

@@ -5,6 +5,31 @@
     <title>你好，GitHub</title>
   </head>
   <body>
-    <h1>This is 2.html</h1>    
+    <h1>This is 2.html</h1>   
+    <button onclick="sendMail();" ></button> 
+    <a  id="aItem" href="">click<a>
   </body>
+  <script>
+    function sendMail()
+    {
+      //  空白 是 %20
+      //  斷行 是 %0D%0A
+      let aItem = document.getElementById('aItem');
+
+      let bodyString = "";
+      bodyString += "您 好，" + "%0D%0A" + "%0D%0A";
+      bodyString += "20241127 " + "每週物料回報表，請回饋我司" + "%0D%0A" + "%0D%0A";
+      bodyString += encodeURI("https://hoaobot.onrender.com/matReport?cb=555,report_dgNIn8ICZeGMA") + "%0D%0A" + "%0D%0A";
+      bodyString += "以下連結為貴司的填寫結果，如有需要再點擊觀看：" + "%0D%0A" + "%0D%0A";
+      bodyString += encodeURI("https://hoaobot.onrender.com/matReport?cb=555,report_dgNIn8ICZeGMA") + "%0D%0A" + "%0D%0A";
+      bodyString += "謝謝。" + "%0D%0A" + "%0D%0A";
+
+      let email1String = "yi-chieh.chen@mgprecision.com;hoaohoao@gmail.com";
+      let subjString = "20241127_駿毅科技工業_每週物料回報表";
+      let ccString = "email@mycompany.com;email2@mycompany.com";
+
+      aItem.href = "mailto:" + email1String + "?subject=" + subjString + "&cc=" + ccString + "&body=" + bodyString ;      
+
+    }
+  </script>
 </html>
