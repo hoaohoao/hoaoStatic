@@ -1,6 +1,6 @@
 {
     "name": "Get MG Message",
     "short_name": "MG_Notification",
-    "start_url": ".",
+    "start_url": "/webApi_Notification_3.html",
     "display": "standalone"
   }
