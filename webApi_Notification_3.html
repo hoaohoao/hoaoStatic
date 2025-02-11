@@ -15,6 +15,7 @@
   
   <div >
     <button id="notificationButton">請求通知權限(iPhone)</button>
+    <button id="reloadButton">重新整理(iPhone)</button>
     <button id="showNotificationButton" style="display:none">發送通知</button>
   </div>
 
@@ -191,6 +192,11 @@
         }
       }
     });
+
+    document.getElementById('reloadButton').addEventListener('click', function () {
+      location.reload();
+    });
+
   </script>
 </body>
 
